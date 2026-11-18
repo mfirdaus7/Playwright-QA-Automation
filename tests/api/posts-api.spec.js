@@ -1,11 +1,14 @@
 const { test, expect } = require("@playwright/test");
+const { PostsApi } = require("../../api-clients/postsApi");
 
 let apiRequest;
+let postsApi;
 
 test.beforeAll(async ({ playwright }) => {
   apiRequest = await playwright.request.newContext({
     baseURL: process.env.API_BASE_URL,
   });
+  postsApi = new PostsApi(apiRequest);
 });
 
 test.afterAll(async () => {
@@ -20,9 +23,7 @@ test("POST should create a new post", async () => {
     userId: 1,
   };
 
-  const response = await apiRequest.post("/posts", {
-    data: newPost,
-  });
+  const response = await postsApi.createPost(newPost);
 
   expect(response.status()).toBe(201);
 
@@ -46,9 +47,7 @@ test("PUT should update an existing post", async () => {
     userId: 1,
   };
 
-  const response = await apiRequest.put("/posts/1", {
-    data: updatedPost,
-  });
+  const response = await postsApi.updatePost(1, updatedPost);
 
   expect(response.status()).toBe(200);
 
@@ -60,7 +59,7 @@ test("PUT should update an existing post", async () => {
 
 /* post API tests - delete existing post */
 test("DELETE should delete an existing post", async () => {
-  const response = await apiRequest.delete("/posts/1");
+  const response = await postsApi.deletePost(1);
 
   expect(response.status()).toBe(200);
 });
@@ -71,9 +70,7 @@ test("PATCH should update only selected fields", async () => {
     title: "Updated Title Only",
   };
 
-  const response = await apiRequest.patch("/posts/1", {
-    data: updatedData,
-  });
+  const response = await postsApi.patchPost(1, updatedData);
 
   expect(response.status()).toBe(200);
 

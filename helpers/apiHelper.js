@@ -4,13 +4,17 @@ const ajv = new Ajv();
 
 function validateSchema(schema, data) {
   const validate = ajv.compile(schema);
-  const isValid = validate(data);
-
-  if (!isValid) {
-    console.log("Schema validation errors:", validate.errors);
-  }
-
-  return isValid;
+  return validate(data);
 }
 
-module.exports = { validateSchema };
+function getValidationErrors(schema, data) {
+  const validate = ajv.compile(schema);
+  validate(data);
+
+  return validate.errors || [];
+}
+
+module.exports = {
+  validateSchema,
+  getValidationErrors,
+};
