@@ -1,185 +1,187 @@
 # Playwright QA Automation
 
-A QA Automation portfolio project built with **Playwright Test and JavaScript**, covering REST API testing, authentication scenarios, API response validation, database testing, and cross-browser test execution.
+A hands-on QA Automation portfolio project built with **Playwright Test and JavaScript**. This project demonstrates API testing, authentication testing, database testing, UI automation, reusable test architecture, and cross-browser execution.
 
-**Latest Test Results: 100 Passed**
+**Latest Test Results: 118 Passed**
 
 ## Tech Stack
 
 - JavaScript (Node.js)
 - Playwright Test
-- SQLite – Database Testing
-- better-sqlite3 – SQLite Database Driver
+- SQLite
+- better-sqlite3
 - AJV – JSON Schema Validation
-- REST API Testing
-- API Client Pattern
-- Git & GitHub
-- GitHub Actions – CI/CD
 - dotenv – Environment Configuration
+- GitHub Actions – CI
+- Page Object Model (POM)
 
 ## Project Structure
 
 ```text
 Playwright-QA-Automation/
+│
 ├── .github/
 │   └── workflows/
 │       └── playwright.yml
+│
 ├── api-clients/
-│   ├── usersApi.js
+│   ├── authApi.js
 │   ├── postsApi.js
-│   └── authApi.js
+│   └── usersApi.js
+│
 ├── fixtures/
+│   ├── db-worker.fixture.js
 │   ├── db.fixture.js
-│   └── db-worker.fixture.js
+│   └── login.fixture.js
+│
 ├── helpers/
-│   └── apiHelper.js
+│   ├── apiHelper.js
+│   └── testHelper.js
+│
+├── pages/
+│   ├── BasePage.js
+│   └── LoginPage.js
+│
 ├── schemas/
 │   └── userSchema.js
+│
 ├── test-data/
 │   └── invalidUsers.js
+│
 ├── tests/
 │   ├── api/
-│   │   ├── users-api.spec.js
-│   │   ├── posts-api.spec.js
 │   │   ├── api-chaining.spec.js
+│   │   ├── authentication.spec.js
 │   │   ├── authorization.spec.js
-│   │   └── authentication.spec.js
-│   └── database/
-│       ├── db-fixture.spec.js
-│       ├── db-worker-fixture.spec.js
-│       ├── users-db.spec.js
-│       ├── db.js
-│       └── seed.js
+│   │   ├── posts-api.spec.js
+│   │   └── users-api.spec.js
+│   │
+│   ├── database/
+│   │   ├── db-fixture.spec.js
+│   │   ├── db-worker-fixture.spec.js
+│   │   ├── db.js
+│   │   ├── seed.js
+│   │   └── users-db.spec.js
+│   │
+│   └── ui/
+│       └── login.spec.js
+│
 ├── .env
 ├── .gitignore
 ├── package.json
 ├── package-lock.json
-└── playwright.config.js
+├── playwright.config.js
+└── README.md
 ```
 
 ## Test Coverage
 
-### 1. REST API Testing
+### 1. API Testing
 
-- Retrieve user details using GET requests.
-- Create resources using POST requests.
-- Update resources using PUT and PATCH requests.
-- Delete resources using DELETE requests.
-- Validate HTTP response status codes and response bodies.
-- Perform data-driven API testing.
+- GET, POST, PUT, PATCH and DELETE requests
+- API response status validation
+- Response body validation
+- Request and response headers
+- Negative API testing
+- API chaining
 
-### 2. API Response Validation
+### 2. Authentication Testing
 
-- Validate API responses using AJV and JSON Schema.
-- Verify required properties and data types.
-- Test invalid response data.
-- Validate missing required properties.
+- Login and access token retrieval
+- Bearer token authentication
+- Access token validation
+- Invalid and missing access token scenarios
+- Refresh token flow
+- Refresh token rotation
+- Invalid refresh token scenarios
 
-### 3. API Chaining
+### 3. Authorization and API Mocking
 
-- Create resources using POST requests.
-- Extract resource IDs from API responses.
-- Reuse returned IDs in subsequent requests.
-- Perform PATCH and DELETE operations.
-- Validate each response throughout the workflow.
+- Mocked HTTP 200, 401 and 403 responses
+- Authorization header scenarios
+- Negative authorization testing
 
-### 4. Authentication & Authorization
+**Note:** Authorization scenarios using mocked responses demonstrate client-side test handling. They do not prove real backend token authorization.
 
-- Perform API login and retrieve access tokens.
-- Send authenticated requests using Bearer tokens.
-- Test access to protected endpoints.
-- Test missing and invalid access tokens.
-- Perform refresh token requests and token rotation.
-- Validate invalid refresh token responses.
+### 4. JSON Schema Validation
 
-### 5. API Mocking
+- AJV integration
+- JSON response schema validation
+- Data structure validation
 
-Simulate different HTTP response scenarios using Playwright route interception:
+### 5. SQLite Database Testing
 
-- HTTP 200 – Successful response.
-- HTTP 401 – Unauthorized.
-- HTTP 403 – Forbidden.
+- CRUD operations
+- SQL queries
+- INNER JOIN and LEFT JOIN
+- GROUP BY and HAVING
+- Aggregate functions
+- Database transactions
+- Commit and rollback
+- Constraints and NULL validation
+- Parameterized queries
+- SQL injection prevention
+- Negative database testing
 
-Validate mocked JSON response bodies and error handling.
+### 6. UI Automation
 
-**Note:** Mocked authorization scenarios simulate backend responses and do not prove actual authentication enforcement by a live backend.
+Using [Practice Test Automation](https://practicetestautomation.com/practice-test-login/):
 
-### 6. Database Testing with SQLite
+- Successful login
+- Successful logout
+- Invalid login scenarios
+- Login page title validation
 
-- Create and manage SQLite databases using better-sqlite3.
-- Perform CRUD operations (Create, Read, Update, Delete).
-- Validate database records and record counts.
-- Test SQL JOIN operations (INNER JOIN and LEFT JOIN).
-- Perform aggregate queries using SUM, AVG, MIN and MAX.
-- Test GROUP BY and HAVING queries.
-- Validate database constraints, including NOT NULL and UNIQUE.
-- Test parameterized queries and SQL injection prevention.
-- Test database transactions, COMMIT and ROLLBACK.
-- Validate database changes after successful and failed operations.
+### 7. Test Architecture
 
-### 7. Playwright Fixtures
+- Page Object Model (POM)
+- Reusable API client classes
+- Custom Playwright fixtures
+- Test-scoped and worker-scoped database fixtures
+- Reusable helper functions
+- Data-driven testing
 
-- Implement test-scoped database fixtures.
-- Implement worker-scoped database fixtures.
-- Manage database setup and teardown.
-- Share database resources between tests within a worker.
-- Reset test data to maintain test isolation.
+### 8. Cross-Browser Testing
 
-### 8. Cross-Browser & Test Configuration
-
-Configure Playwright projects to execute tests across:
+Configured Playwright projects:
 
 - Chromium
 - Firefox
 - WebKit
-- Database
+- Dedicated database project
 
-Database tests run in a dedicated project instead of being repeated across all browser projects.
+Database tests run separately to avoid unnecessary repetition across browser projects.
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js
-- npm
-- Git
-
-### Installation
-
-Clone the repository:
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/mfirdaus7/Playwright-QA-Automation.git
+git clone <your-repository-url>
 cd Playwright-QA-Automation
 ```
 
-Install dependencies:
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-Install Playwright browsers:
+### 3. Install Playwright browsers
 
 ```bash
 npx playwright install
 ```
 
-### Environment Configuration
+### 4. Configure environment variables
 
-Create a `.env` file in the project root:
+Create a `.env` file in the project root and configure the environment variables required by the API clients.
 
-```env
-API_BASE_URL=https://jsonplaceholder.typicode.com
-```
+Do not commit `.env` or expose API credentials.
 
-Configure the appropriate API base URL for the authentication tests if required.
+### 5. Run tests
 
-Do not commit `.env` files or credentials to GitHub.
-
-### Run Tests
-
-Run all tests:
+Run the complete test suite:
 
 ```bash
 npx playwright test
@@ -188,19 +190,25 @@ npx playwright test
 Run API tests:
 
 ```bash
-npx playwright test tests/api/
+npx playwright test tests/api
 ```
 
 Run database tests:
 
 ```bash
-npx playwright test --project=database
+npx playwright test tests/database
 ```
 
-Run a specific test file:
+Run UI tests:
 
 ```bash
-npx playwright test tests/database/db-worker-fixture.spec.js
+npx playwright test tests/ui
+```
+
+Run UI tests on Chromium only:
+
+```bash
+npx playwright test tests/ui/login.spec.js --project=chromium
 ```
 
 View HTML report:
@@ -209,46 +217,33 @@ View HTML report:
 npx playwright show-report
 ```
 
-**Windows PowerShell users:** If `npx` is blocked by execution policy, use `npx.cmd` instead.
-
-## Continuous Integration
-
-This project uses **GitHub Actions** to automatically execute Playwright tests when code is pushed to the `main` branch or when a pull request is created.
-
-The workflow includes:
-
-1. Check out the repository.
-2. Set up Node.js.
-3. Install project dependencies.
-4. Install Playwright browsers.
-5. Execute automated tests.
-6. Upload the Playwright HTML report as an artifact.
-
 ## Test Execution Results
 
-**Latest local regression run: 100 tests passed.**
+**Latest local full-suite regression: 118 tests passed.**
 
-The test suite covers API automation, database testing, and dedicated Playwright project execution.
+The project is configured to execute UI and API tests across supported browser projects, with database tests running in a dedicated project.
 
-## Learning Objectives
+## CI/CD
 
-This project demonstrates practical skills in:
+GitHub Actions workflow is configured to support automated Playwright test execution.
 
-- REST API test automation
-- JavaScript for test automation
-- Data-driven testing
-- API Client Pattern
-- JSON Schema validation using AJV
-- Authentication and authorization testing
-- API mocking and response validation
-- SQLite database testing
-- SQL queries and database transactions
-- Playwright fixtures and test isolation
-- Cross-browser test configuration
-- Environment variable management
-- CI/CD automation with GitHub Actions
+Workflow file:
+
+```text
+.github/workflows/playwright.yml
+```
+
+## Important Notes
+
+- JSONPlaceholder simulates write operations; POST, PUT, PATCH and DELETE responses do not represent persistent database changes.
+- Authorization mocking is used to test expected client-side responses.
+- SQLite tests use isolated in-memory databases through custom fixtures.
 
 ## Author
+
+**Software Testing & QA Automation Portfolio**
+
+Built to demonstrate practical skills in JavaScript, Playwright, API testing, database testing, UI automation and test automation architecture.
 
 **Firdaus**
 

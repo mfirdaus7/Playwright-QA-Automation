@@ -7,6 +7,10 @@ exports.test = base.extend({
 
     await loginPage.goto();
 
-    await use(loginPage);
+    try {
+      await use(loginPage);
+    } finally {
+      console.log("Login fixture cleanup completed");
+    }
   },
 });
